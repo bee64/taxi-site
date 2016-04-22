@@ -9,6 +9,8 @@ h1 {
 }
 
 .logo {
+	color: #009688;
+	text-shadow: 2px 2px 0px #fff;
 	font-size: 500%;
 	margin-top: 0px;
 	padding-top: 20px;
@@ -22,6 +24,10 @@ body {
  	-o-background-size: cover;
  	background-size: cover;
  	overflow-x: hidden;
+}
+
+md-checkbox.md-default-theme.md-checked ._md-icon, md-checkbox.md-checked ._md-icon{
+	background-color: rgba(0, 150, 136, .9);
 }
 
 .info-wrap {

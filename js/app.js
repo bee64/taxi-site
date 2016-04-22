@@ -12,6 +12,7 @@
     self.selectedItemChange = selectedItemChange;
     self.searchTextChange   = searchTextChange;
     self.newState = newState;
+    self.group = false;
     function newState(state) {
       alert("Sorry! You'll need to create a Constituion for " + state + " first!");
     }
