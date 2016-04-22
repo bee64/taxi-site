@@ -1,8 +1,7 @@
 (function () {
   'use strict';
-  angular
-      .module('taxiFare', ['ngMaterial'])
-      .controller('MainCtrl', MainCtrl);
+  var app = angular.module('taxiFare', ['ngMaterial']);
+  app.controller('MainCtrl', MainCtrl);
   function MainCtrl ($timeout, $q, $log) {
     var self = this;
     self.simulateQuery = false;
@@ -66,6 +65,34 @@
       return function filterFn(state) {
         return (state.value.indexOf(lowercaseQuery) === 0);
       };
+    }
+  }
+
+  app.controller('DialogCtrl', DialogCtrl);
+  function DialogCtrl($scope, $mdDialog) {
+    $scope.showDialog = function (ev) {
+      console.log("Ayy");
+        $mdDialog.show({
+          controller: TemplateCtrl,
+          templateUrl: 'dialog.tmpl.html',
+          parent: angular.element(document.body),
+          targetEvent: ev,
+          clickOutsideToClose: true
+        });
+      }
+  }
+  function TemplateCtrl($mdDialog) {
+    // add stuff in here if you wanna add buttons to the dialog box
+    $scope.hide = function(){
+      $mdDialog.hide();
+    }
+
+    $scope.cancel = function(){
+      $mdDialog.cancel();
+    }
+
+    $scope.answer = function(answer) {
+      $mdDialog.hide();
     }
   }
 })();

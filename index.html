@@ -9,9 +9,9 @@
 </head>
 
 <body ng-app="taxiFare">
-	<h1 class="logo">Taxi Fare Estimator</h1>
-	<div class="row fade">
-		<div class="col-md-offset-4 col-md-4">
+	<h1 class="logo" id="top">Taxi Fare Estimator</h1>
+	<div class="row">
+		<div class="col-md-offset-3 col-md-6">
 			<div class="search-wrap">
 				<form ng-controller="MainCtrl as ctrl" ng-cloak>
 					<md-autocomplete ng-disabled="ctrl.isDisabled"
@@ -47,15 +47,25 @@
 						</md-item-template>
 					</md-autocomplete>
 				</form>
-			<div class="btn btn-lg btn-primary">Get your fare!</div>
+				<div ng-controller="DialogCtrl as ctrl">
+					<div ng-click="showDialog($event)" class="btn btn-lg btn-primary">Get your fare!</div>
+				</div>
 			</div>
 		</div>
 	</div>
-	<div class="row info-wrap">
+	<div class="row info-wrap" id="bottom">
 		<div class="col-md-4 info-block">
 			<h1>How does it work?</h1>
 			<!-- <div class="strip"></div> -->
 			<p>Simple! Just enter in your current location and where you need to go, and let us handle the hard part. Within a few seconds, Taxi Fare Estimator will give you it's best estimate for your trip, based on information published by the New York Taxi Service.</p>
+		</div>
+		<div class="col-md-4 info-block">
+			<h1>Title 2</h1>
+			<p>Title 2 is the best title</p>
+		</div>
+		<div class="col-md-4 info-block">
+			<h1>Title 3</h1>
+			<p>Title 3 is the best title, for real</p>
 		</div>
 	</div>
 </body>
