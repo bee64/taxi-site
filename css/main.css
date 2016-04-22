@@ -1,0 +1,41 @@
+input {
+	border: none;
+	border-bottom: 3px solid #ddd;
+	border-radius: 5px;
+	width: 100%;
+	line-height: 200%;
+	padding-left: 5px;
+}
+
+input:focus {
+	background-color: rgba(0,0,0, .05);
+}
+
+h1 {
+	text-align: center;
+}
+
+.btn-primary {
+	margin: 0 auto;
+	width: 50%;
+	display: block;
+	position: relative;
+	text-align: center;
+	border-radius: 1px;
+	background: none;
+	color: #333;
+	/* Color: Material Teal*/
+	border: 3px solid #009688;
+	color: #009688;
+	transition: background-color 0.1s ease-out,
+              color 0.1s ease-out;
+}
+
+.btn-primary:hover,
+.btn-primary:focus {
+	border: 3px solid #009688;
+	color: #009688;
+	background: rgba(0, 150, 136, .25);
+	transition: background-color 0.2s ease-in,
+              color 0.2s ease-in;
+}

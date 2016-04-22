@@ -1,0 +1,75 @@
+<html>
+	<head>
+		<title>Taxi Fare Thingy</title>
+		<link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">
+		<link rel="stylesheet" href="http://ajax.googleapis.com/ajax/libs/angular_material/1.1.0-rc2/angular-material.min.css">
+		<link rel="stylesheet" type="text/css" href="css/main.css">\
+		<link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/themes/smoothness/jquery-ui.css">
+	</head>
+
+	<body ng-app="taxiFare">
+		<h1>Taxi Fare Estimator</h1>
+		<div class="row" ng-controller="MainCtrl as ctrl" ng-cloak>
+			<div class="col-md-offset-4 col-md-4">
+				<md-content class="md-padding">
+				<form>
+				<md-autocomplete 
+					ng-disabled="ctrl.isDisabled"
+					md-no-cache="ctrl.noCache"
+					md-selected-item="ctrl.selectedItem"
+					md-search-text-change="ctrl.searchTextChange(ctrl.searchText)"
+					md-search-text="ctrl.searchText"
+					md-selected-item-change="ctrl.selectedItemChange(item)"
+					md-items="item in ctrl.querySearch(ctrl.searchText)"
+					md-item-text="item.display"
+					md-min-length="1"
+					placeholder="Current Location">
+				<md-item-template>
+					<span md-highlight-text="ctrl.searchText"
+						md-highlight-flags="^i">{{item.display}}
+					</span>
+				</md-item-template>
+				</md-autocomplete>
+			</form>
+				</md-content>
+				<md-content class="md-padding">
+				<form>
+				<md-autocomplete 
+					ng-disabled="ctrl.isDisabled"
+					md-no-cache="ctrl.noCache"
+					md-selected-item="ctrl.selectedItem"
+					md-search-text-change="ctrl.searchTextChange(ctrl.searchText)"
+					md-search-text="ctrl.searchText"
+					md-selected-item-change="ctrl.selectedItemChange(item)"
+					md-items="item in ctrl.querySearch(ctrl.searchText)"
+					md-item-text="item.display"
+					md-min-length="1"
+					placeholder="Destination Name">
+				<md-item-template>
+					<span md-highlight-text="ctrl.searchText"
+						md-highlight-flags="^i">{{item.display}}
+					</span>
+				</md-item-template>
+				</md-autocomplete>
+			</form>
+				</md-content>
+			</div>
+			<div class="col-md-4"></div>
+		</div>
+	</body>
+
+
+
+	<script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.5.3/angular.min.js"></script>
+  	<script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.5.3/angular-animate.min.js"></script>
+  	<script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.5.3/angular-aria.min.js"></script>
+  	<script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.5.3/angular-messages.min.js"></script>
+  	 <script src="http://ajax.googleapis.com/ajax/libs/angular_material/1.1.0-rc2/angular-material.min.js"></script>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.2/jquery.min.js"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.js"></script>
+
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-bootstrap/1.3.2/ui-bootstrap.min.js"></script>
+    <script src="js/app.js"></script>
+
+</html>
