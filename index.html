@@ -48,7 +48,7 @@
 						</md-item-template>
 					</md-autocomplete>
 				</form>
-				<form ng-controller="MainCtrl as ctrl" ng-cloak>
+				<form ng-controller="MainCtrl as ctrl" ng-cloak name="form2">
 					<md-autocomplete ng-disabled="ctrl.isDisabled"
 							md-no-cache="ctrl.noCache"
 							md-selected-item="ctrl.selectedItem"
@@ -65,10 +65,18 @@
 						</md-item-template>
 					</md-autocomplete>
 					<br>
-					<md-checkbox ng-model="ctrl.group">Are you riding in a group?</md-checkbox>
+					<md-input-container ng-cloak class="md-block">
+						<label>Number of Riders</label>
+						<input required type="number" min="1" max="9" step="any" name="numRiders" ng-model="ctrl.numRiders"></input>
+						<div multiple ng-messages="form2.numRiders.$error">
+							<div ng-message="required">This is required!</div>
+							<div ng-message="min">1 rider required</div>
+							<div ng-message="max">No more than 9 riders</div>
+						</div>
+					</md-input-container>
 				</form>
-				<div ng-controller="DialogCtrl as ctrl">
-					<div ng-click="showDialog($event)" class="btn btn-lg btn-primary">Get your fare!</div>
+				<div ng-controller="DialogCtrl as ctrl" ng-cloak	>
+					<div ng-click="getInfo($event)" class="btn btn-lg btn-primary">Get your fare!</div>
 				</div>
 			</div>
 		</div>

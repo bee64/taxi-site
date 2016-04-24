@@ -1,7 +1,15 @@
 (function () {
   'use strict';
-  var app = angular.module('taxiFare', ['ngMaterial']);
-  app.controller('MainCtrl', MainCtrl);
+  // idk why, but adding ngMessages makes the messages stop working
+  var app = angular
+    .module('taxiFare', ['ngMaterial', 'ngMessages'])
+    .config(function($mdThemingProvider) {
+      $mdThemingProvider
+        .theme('default')
+        .primaryPalette('teal');
+    });
+  app.controller('MainCtrl', MainCtrl)
+
   function MainCtrl ($timeout, $q, $log) {
     var self = this;
     self.simulateQuery = false;
@@ -13,6 +21,7 @@
     self.searchTextChange   = searchTextChange;
     self.newState = newState;
     self.group = false;
+    self.numRiders;
     function newState(state) {
       alert("Sorry! You'll need to create a Constituion for " + state + " first!");
     }
@@ -81,6 +90,10 @@
           clickOutsideToClose: true
         });
       }
+
+    $scope.getInfo = function (ev) {
+      // get all da info
+    }
   }
   function TemplateCtrl($mdDialog) {
     // add stuff in here if you wanna add buttons to the dialog box

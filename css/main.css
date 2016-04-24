@@ -16,6 +16,14 @@ h1 {
 	padding-top: 20px;
 }
 
+md-input-container {
+	width: 150px;
+}
+
+md-input-container input {
+	font-size: 150%;
+}
+
 body {
 	font-family: 'Raleway', sans-serif;
 	background: url('../assets/ny.jpg') no-repeat center center fixed;
