@@ -114,7 +114,8 @@
     function usableAddress(address){
       var temp;
       temp = address.replace(' ', '+');
-      temp = temp + "New+York+City,+NY";
+      temp = temp + "+New+York+City,+NY";
+      console.log(temp);
       return temp;
     }
 
@@ -125,7 +126,7 @@
       start = usableAddress(start);
       end   = usableAddress(end);
       var urlTop = "https://maps.googleapis.com/maps/api/distancematrix/json?units=imperial&origins=";
-      var urlBtm = start + "&destinations=" + end;
+      var urlBtm = start + "&destinations=" + end + "&departure_time=" + Math.round(new Date().getTime()/1000.0) + "&traffic_model=best_guess";
 
       $http.get(urlTop + urlBtm)
       .success(function(res) {
