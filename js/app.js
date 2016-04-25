@@ -7,21 +7,29 @@
       $mdThemingProvider
         .theme('default')
         .primaryPalette('teal');
+    })
+    .config(function($httpProvider){
+      delete $httpProvider.defaults.headers.common['X-Requested-With'];
     });
   app.controller('MainCtrl', MainCtrl)
 
-  function MainCtrl ($timeout, $q, $log) {
+  function MainCtrl ($timeout, $q, $log, $http) {
     var self = this;
+    $http.defaults.cache = true;
     self.simulateQuery = false;
     self.isDisabled    = false;
     // list of `state` value/display objects
-    self.states        = loadAll();
+    self.states = loadAll();
     self.querySearch   = querySearch;
     self.selectedItemChange = selectedItemChange;
     self.searchTextChange   = searchTextChange;
     self.newState = newState;
-    self.group = false;
     self.numRiders;
+    self.currentText;
+
+    var urlTop = "https://maps.googleapis.com/maps/api/place/autocomplete/json?input="
+    var urlBtm = "&location=40.7128,-74.0059&radius=605000000"
+
     function newState(state) {
       alert("Sorry! You'll need to create a Constituion for " + state + " first!");
     }
@@ -45,31 +53,35 @@
     }
     function searchTextChange(text) {
       $log.info('Text changed to ' + text);
+      // if(text !== "")
+      //   placesAjax();
     }
+
+    function placesAjax() {
+      $http.get(urlTop + self.searchText + urlBtm)
+        .success(function (response) {
+          var autocomplete;
+          response.predictions.map(function(item) {
+            autocomplete = autocomplete + ": "
+          });
+          loadAll(autoComplete);
+        });
+    }
+
     function selectedItemChange(item) {
       $log.info('Item changed to ' + JSON.stringify(item));
     }
-    /**
-     * Build `states` list of key/value pairs
-     */
+
     function loadAll() {
-      var allStates = 'Alabama, Alaska, Arizona, Arkansas, California, Colorado, Connecticut, Delaware,\
-              Florida, Georgia, Hawaii, Idaho, Illinois, Indiana, Iowa, Kansas, Kentucky, Louisiana,\
-              Maine, Maryland, Massachusetts, Michigan, Minnesota, Mississippi, Missouri, Montana,\
-              Nebraska, Nevada, New Hampshire, New Jersey, New Mexico, New York, North Carolina,\
-              North Dakota, Ohio, Oklahoma, Oregon, Pennsylvania, Rhode Island, South Carolina,\
-              South Dakota, Tennessee, Texas, Utah, Vermont, Virginia, Washington, West Virginia,\
-              Wisconsin, Wyoming';
-      return allStates.split(/, +/g).map( function (state) {
+      var allLocations = "Central Park Zoo, Carnegie Hall, Times Square, Imperial Theatre, Columbia University, American Museum of Natural History, Yankee Stadium, Bronx Zoo, Cross County Shopping Center, University Hospital"; 
+      return allLocations.split(/, +/g).map( function (location) {
         return {
-          value: state.toLowerCase(),
-          display: state
+          value: location.toLowerCase(),
+          display: location
         };
       });
     }
-    /**
-     * Create filter function for a query string
-     */
+
     function createFilterFor(query) {
       var lowercaseQuery = angular.lowercase(query);
       return function filterFn(state) {
@@ -80,33 +92,21 @@
 
   app.controller('DialogCtrl', DialogCtrl);
   function DialogCtrl($scope, $mdDialog) {
-    $scope.showDialog = function (ev) {
-      console.log("Ayy");
-        $mdDialog.show({
-          controller: TemplateCtrl,
-          templateUrl: 'dialog.tmpl.html',
-          parent: angular.element(document.body),
-          targetEvent: ev,
-          clickOutsideToClose: true
-        });
-      }
+    $scope.getInfo = function (ev, dest, numRiders) {
+      var info = dest + " " + numRiders;
 
-    $scope.getInfo = function (ev) {
-      // get all da info
-    }
-  }
-  function TemplateCtrl($mdDialog) {
-    // add stuff in here if you wanna add buttons to the dialog box
-    $scope.hide = function(){
-      $mdDialog.hide();
-    }
-
-    $scope.cancel = function(){
-      $mdDialog.cancel();
-    }
-
-    $scope.answer = function(answer) {
-      $mdDialog.hide();
+      $mdDialog.show(
+        $mdDialog.alert()
+          .parent(angular.element(document.body))
+          .clickOutsideToClose(true)
+          .title("Fare")
+          .textContent(info)
+          .ariaLabel("dialog")
+          .ok('Continue')
+          .targetEvent(ev)
+          .openFrom('#top')
+          .closeTo('#bottom')
+      );
     }
   }
 })();
