@@ -92,9 +92,11 @@
 
   app.controller('DialogCtrl', DialogCtrl);
   function DialogCtrl($scope, $mdDialog) {
+    
     $scope.getInfo = function (ev, dest, numRiders) {
       var info = dest + " " + numRiders;
-
+      var destLatLng = addressToLatLng(dest);
+      var currLatLng;
       $mdDialog.show(
         $mdDialog.alert()
           .parent(angular.element(document.body))
@@ -107,6 +109,16 @@
           .openFrom('#top')
           .closeTo('#bottom')
       );
+    }
+    function addressToLatLng(address) {
+      var geocoder = new google.maps.Geocoder();
+      geocoder.geocode({'address': address}, function(results, status){
+        if(status == google.maps.GeocoderStatus.OK) {
+          results[0].geometry.location;
+        } else {
+          console.log("Error getting address: " + address);
+        }
+      });
     }
   }
 })();
