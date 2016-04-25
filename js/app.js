@@ -48,20 +48,11 @@
     }
     function searchTextChange(text) {
       // $log.info('Text changed to ' + text);
-      if(text !== "")
-        placesAjax();
+      // if(text !== "")
+      //   placesAjax();
     }
 
     function placesAjax() {
-      // $http.get(urlTop + self.searchText + urlBtm)
-      //   .success(function (response) {
-      //     var autocomplete = "";
-      //     console.log(response);
-      //     response.predictions.forEach(function(item) {
-      //       autocomplete = autocomplete + ": "
-      //     });
-      //     loadAll(autocomplete);
-      //   });
       var req = {
         method: 'POST',
         url: '/autocomplete',
@@ -103,10 +94,9 @@
   function DialogCtrl($scope, $mdDialog, $http) {
     
     $scope.getInfo = function (ev, curr, dest, numRiders) {
-      var info = curr + " " + dest + " " + numRiders;
-      calcDistDuration(curr, dest);
-
-      $mdDialog.show(
+      calcDistDuration(curr, dest, function(time, dist){
+        var info = "Time: " + time + ", Distance: " + dist + ", Riders: " + numRiders;
+        $mdDialog.show(
         $mdDialog.alert()
           .parent(angular.element(document.body))
           .clickOutsideToClose(true)
@@ -117,37 +107,31 @@
           .targetEvent(ev)
           .openFrom('#top')
           .closeTo('#bottom')
-      );
+        );
+      });
     }
 
-    function calcDistDuration(start, end) {
+    function usableAddress(address){
+      var temp;
+      temp = address.replace(' ', '+');
+      temp = temp + "New+York+City,+NY";
+      return temp;
+    }
+
+    function calcDistDuration(start, end, callback) {
       var geocoder = new google.maps.Geocoder();
       var spos;
       var epos;
-      geocoder.geocode({'address': start}, function(results, status){
-        if(status == google.maps.GeocoderStatus.OK) {
-          spos = results[0].geometry.location;
-          
-          geocoder.geocode({'address': end}, function(results, status) {
-            if(status == google.maps.GeocoderStatus.OK) {
-              epos = results[0].geometry.location;
-              var urlTop = "https://maps.googleapis.com/maps/api/distancematrix/json?units=imperial&origins=";
-              var urlPos = spos.lat() + "," + spos.lng()
-                + "&destinations=" + epos.lat() + "," + epos.lng();
-              var urlBtm;
-              $http.get(urlTop + urlPos)
-                .success(function(response) {
-                  console.log(response);
-                });
-            } else {
-              console.log("Error getting end address: " + end);
-            }
-          });
-        } else {
-          console.log("Error getting address: " + start);
-        }
-      });
+      start = usableAddress(start);
+      end   = usableAddress(end);
+      var urlTop = "https://maps.googleapis.com/maps/api/distancematrix/json?units=imperial&origins=";
+      var urlBtm = start + "&destinations=" + end;
 
+      $http.get(urlTop + urlBtm)
+      .success(function(res) {
+        var values = res.rows[0].elements[0];
+        callback(values.duration.text, values.distance.text);
+      });
     }
   }
 })();
