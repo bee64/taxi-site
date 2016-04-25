@@ -1,35 +1,17 @@
-var http = require('http');
-var router = require('express');
-var mongo = require('mongodb');
-var server = http.createServer(router);
-var mongoose = require('mongoose');
+var express = require('express');
+var app = express();
+var path = require('path');
+app.use(express.static(path.resolve(__dirname, '../')))
+var API_KEY = require('./config.json').API_KEY;
 
-var app = router();
+var urlTop = "https://maps.googleapis.com/maps/api/place/autocomplete/json?input="
+var urlBtm = "&location=40.7128,-74.0059&radius=605000000"
 
-server.listen(porcess.env.PORT || 3000, process.env.IP || "0.0.0.0", function(){
-	var addr = server.address();
-	console.log("Server listening at", addr.address + ":" + addr.port);
+app.post('/autocomplete', function(req, res) {
+	data = req;
+	console.log(data);
 });
 
-var db = mongoose.connection;
-db.on('error', console.error.bind(console, "connection error:"));
-db.once('open', function(){
-	var userSchema = mongoose.Schema({
-		name: String,
-		passhash: String,
-		email: String
-	});
-
-	var destSchema = mongoose.Schema({
-		name: String,
-		address: String,
-		lat: Number,
-		lng: Number
-	});
-	var User = mongoose.model('User', userSchema);
-	var Dest = mongoose.model('Dest', destSchema);
-
-	userSchema.methods.validatePassword = function(var input) {
-		
-	}
+app.listen(3000, function(){
+	console.log('Server listening on port 3000');
 });

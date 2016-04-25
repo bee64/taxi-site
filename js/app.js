@@ -3,14 +3,14 @@
   // idk why, but adding ngMessages makes the messages stop working
   var app = angular
     .module('taxiFare', ['ngMaterial', 'ngMessages'])
-    .config(function($mdThemingProvider) {
+    .config(function($mdThemingProvider, $httpProvider) {
       $mdThemingProvider
         .theme('default')
         .primaryPalette('teal');
+      // $httpProvider.defaults.useXDomain = true;
+      // $httpProvider.defaults.headers.common = 'Content-Type: application/json';
+      // delete $httpProvider.defaults.headers.common['X-Requested-With'];
     })
-    .config(function($httpProvider){
-      delete $httpProvider.defaults.headers.common['X-Requested-With'];
-    });
   app.controller('MainCtrl', MainCtrl)
 
   function MainCtrl ($timeout, $q, $log, $http) {
@@ -21,14 +21,9 @@
     // list of `state` value/display objects
     self.states = loadAll();
     self.querySearch   = querySearch;
-    self.selectedItemChange = selectedItemChange;
-    self.searchTextChange   = searchTextChange;
-    self.newState = newState;
+    self.selectedItemChange  = selectedItemChange;
+    self.searchTextChange    = searchTextChange;
     self.numRiders;
-    self.currentText;
-
-    var urlTop = "https://maps.googleapis.com/maps/api/place/autocomplete/json?input="
-    var urlBtm = "&location=40.7128,-74.0059&radius=605000000"
 
     function newState(state) {
       alert("Sorry! You'll need to create a Constituion for " + state + " first!");
@@ -52,24 +47,38 @@
       }
     }
     function searchTextChange(text) {
-      $log.info('Text changed to ' + text);
-      // if(text !== "")
-      //   placesAjax();
+      // $log.info('Text changed to ' + text);
+      if(text !== "")
+        placesAjax();
     }
 
     function placesAjax() {
-      $http.get(urlTop + self.searchText + urlBtm)
-        .success(function (response) {
-          var autocomplete;
-          response.predictions.map(function(item) {
-            autocomplete = autocomplete + ": "
-          });
-          loadAll(autoComplete);
+      // $http.get(urlTop + self.searchText + urlBtm)
+      //   .success(function (response) {
+      //     var autocomplete = "";
+      //     console.log(response);
+      //     response.predictions.forEach(function(item) {
+      //       autocomplete = autocomplete + ": "
+      //     });
+      //     loadAll(autocomplete);
+      //   });
+      var req = {
+        method: 'POST',
+        url: '/autocomplete',
+        data: {
+          text: self.searchText
+        }
+      }
+      $http(req)
+        .then(function success(res) {
+          console.log(res);
+        }, function error(res) {
+          console.log(res);
         });
     }
 
     function selectedItemChange(item) {
-      $log.info('Item changed to ' + JSON.stringify(item));
+      // $log.info('Item changed to ' + JSON.stringify(item));
     }
 
     function loadAll() {
@@ -91,12 +100,12 @@
   }
 
   app.controller('DialogCtrl', DialogCtrl);
-  function DialogCtrl($scope, $mdDialog) {
+  function DialogCtrl($scope, $mdDialog, $http) {
     
-    $scope.getInfo = function (ev, dest, numRiders) {
-      var info = dest + " " + numRiders;
-      var destLatLng = addressToLatLng(dest);
-      var currLatLng;
+    $scope.getInfo = function (ev, curr, dest, numRiders) {
+      var info = curr + " " + dest + " " + numRiders;
+      calcDistDuration(curr, dest);
+
       $mdDialog.show(
         $mdDialog.alert()
           .parent(angular.element(document.body))
@@ -110,15 +119,35 @@
           .closeTo('#bottom')
       );
     }
-    function addressToLatLng(address) {
+
+    function calcDistDuration(start, end) {
       var geocoder = new google.maps.Geocoder();
-      geocoder.geocode({'address': address}, function(results, status){
+      var spos;
+      var epos;
+      geocoder.geocode({'address': start}, function(results, status){
         if(status == google.maps.GeocoderStatus.OK) {
-          results[0].geometry.location;
+          spos = results[0].geometry.location;
+          
+          geocoder.geocode({'address': end}, function(results, status) {
+            if(status == google.maps.GeocoderStatus.OK) {
+              epos = results[0].geometry.location;
+              var urlTop = "https://maps.googleapis.com/maps/api/distancematrix/json?units=imperial&origins=";
+              var urlPos = spos.lat() + "," + spos.lng()
+                + "&destinations=" + epos.lat() + "," + epos.lng();
+              var urlBtm;
+              $http.get(urlTop + urlPos)
+                .success(function(response) {
+                  console.log(response);
+                });
+            } else {
+              console.log("Error getting end address: " + end);
+            }
+          });
         } else {
-          console.log("Error getting address: " + address);
+          console.log("Error getting address: " + start);
         }
       });
+
     }
   }
 })();
