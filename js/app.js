@@ -15,7 +15,7 @@
 
   function MainCtrl ($timeout, $q, $log, $http) {
     var self = this;
-    $http.defaults.cache = true;
+    // $http.defaults.cache = true;
     self.simulateQuery = false;
     self.isDisabled    = false;
     // list of `state` value/display objects
@@ -48,21 +48,22 @@
     }
     function searchTextChange(text) {
       // $log.info('Text changed to ' + text);
-      // if(text !== "")
-      //   placesAjax();
+      if(text !== "")
+        placesAjax();
     }
 
     function placesAjax() {
+      // if(self.searchText != "")
+      //   url = url + "/" + self.searchText;
       var req = {
         method: 'POST',
         url: '/autocomplete',
-        data: {
-          text: self.searchText
-        }
+        data: {'text': self.searchText}
       }
       $http(req)
         .then(function success(res) {
-          console.log(res);
+          console.log("gettin' called");
+          self.states = loadAuto(res);
         }, function error(res) {
           console.log(res);
         });
@@ -78,6 +79,19 @@
         return {
           value: location.toLowerCase(),
           display: location
+        };
+      });
+    }
+
+    function loadAuto(res) {
+      var locations = res.data.predictions;
+      
+      return locations.map(function(loc){
+        var temp = loc.terms[0].value;
+        console.log(temp);
+        return {
+          value: temp.toLowerCase(),
+          display: temp
         };
       });
     }
