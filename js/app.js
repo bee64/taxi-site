@@ -23,11 +23,8 @@
     self.querySearch   = querySearch;
     self.selectedItemChange  = selectedItemChange;
     self.searchTextChange    = searchTextChange;
+    self.searchTextChange2   = searchTextChange2;
     self.numRiders;
-
-    function newState(state) {
-      alert("Sorry! You'll need to create a Constituion for " + state + " first!");
-    }
     // ******************************
     // Internal methods
     // ******************************
@@ -48,17 +45,24 @@
     }
     function searchTextChange(text) {
       // $log.info('Text changed to ' + text);
-      if(text !== "")
-        placesAjax();
+      if(text !== "" && text !== undefined)
+        placesAjax(1);
+    }
+    function searchTextChange2(text){
+      if(text !== "" && text !== undefined)
+        placesAjax(2);
     }
 
-    function placesAjax() {
-      // if(self.searchText != "")
-      //   url = url + "/" + self.searchText;
+    function placesAjax(num) {
+      var text;
+      if(num === 1)
+        text = self.searchText;
+      if(num === 2)
+        text = self.searchText2;
       var req = {
         method: 'POST',
         url: '/autocomplete',
-        data: {'text': self.searchText}
+        data: {'text': text}
       }
       $http(req)
         .then(function success(res) {
