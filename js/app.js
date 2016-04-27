@@ -114,18 +114,33 @@
     $scope.getInfo = function (ev, curr, dest, numRiders) {
       calcDistDuration(curr, dest, function(time, dist){
         var info = "Time: " + time + ", Distance: " + dist + ", Riders: " + numRiders;
-        $mdDialog.show(
-        $mdDialog.alert()
-          .parent(angular.element(document.body))
-          .clickOutsideToClose(true)
-          .title("Fare")
-          .textContent(info)
-          .ariaLabel("dialog")
-          .ok('Continue')
-          .targetEvent(ev)
-          .openFrom('#top')
-          .closeTo('#bottom')
-        );
+        var req = {
+          method: 'POST',
+          url: '/fare',
+          data: {
+            'time': time,
+            'dist': dist,
+            'riders': numRiders
+          }
+        }
+        $http(req)
+          .then(function success(res) {
+            info = res.data.calc;
+            $mdDialog.show(
+            $mdDialog.alert()
+              .parent(angular.element(document.body))
+              .clickOutsideToClose(true)
+              .title("Fare")
+              .textContent(info)
+              .ariaLabel("dialog")
+              .ok('Continue')
+              .targetEvent(ev)
+              .openFrom('#top')
+              .closeTo('#bottom')
+            );
+          }, function error(res){
+            console.log(res);
+          });
       });
     }
 
@@ -133,7 +148,6 @@
       var temp;
       temp = address.replace(' ', '+');
       temp = temp + "+New+York+City,+NY";
-      console.log(temp);
       return temp;
     }
 
