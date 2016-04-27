@@ -1,11 +1,11 @@
 var express = require('express');
-var app = express();
-var path = require('path');
+var app     = express();
+var path    = require('path');
 var bodyParser = require('body-parser');
 var request = require('request');
 app.use(bodyParser.json());
-app.use(express.static(path.resolve(__dirname, '/public')));
-var json = require('app/config.json');
+app.use(express.static(path.join(__dirname, '/public')));
+var json = require('./app/config.json');
 var API_KEY   = json.API_KEY;
 var INTERCEPT = json.INTERCEPT;
 var XONE      = json.XONE;
@@ -23,6 +23,10 @@ app.post('/autocomplete', function(req, res) {
 		if(err) throw err;
 		res.send(body);
 	});
+});
+
+app.get('/', function(req, res) {
+	res.sendFile(__dirname + '/index.html');
 });
 
 app.post('/fare', function(req, res) {

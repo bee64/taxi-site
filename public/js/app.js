@@ -125,7 +125,7 @@
         }
         $http(req)
           .then(function success(res) {
-            info = res.data.calc;
+            info = '$' + res.data.calc;
             $mdDialog.show(
             $mdDialog.alert()
               .parent(angular.element(document.body))
