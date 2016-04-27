@@ -66,7 +66,6 @@
       }
       $http(req)
         .then(function success(res) {
-          console.log("gettin' called");
           self.states = loadAuto(res);
         }, function error(res) {
           console.log(res);
@@ -92,7 +91,6 @@
       
       return locations.map(function(loc){
         var temp = loc.terms[0].value;
-        console.log(temp);
         return {
           value: temp.toLowerCase(),
           display: temp
@@ -126,18 +124,24 @@
         $http(req)
           .then(function success(res) {
             info = '$' + res.data.calc;
+            // Trying to inject data into the fare controller
             $mdDialog.show(
-            $mdDialog.alert()
-              .parent(angular.element(document.body))
-              .clickOutsideToClose(true)
-              .title("Fare")
-              .textContent(info)
-              .ariaLabel("dialog")
-              .ok('Continue')
-              .targetEvent(ev)
-              .openFrom('#top')
-              .closeTo('#bottom')
-            );
+            {
+              parent: angular.element(document.body),
+              clickOutsideToClose: true,
+              title: "Fare",
+              textContent: info,
+              ariaLabel: "dialog",
+              targetEvent: ev,
+              openFrom: '#top',
+              closeTo: '#bottom',
+              templateUrl: 'fare.tmpl.html',
+              controller: FareCtrl,
+              locals: {
+                fare: info
+              },
+              cancel: 'OK'
+            });
           }, function error(res){
             console.log(res);
           });
@@ -166,5 +170,10 @@
         callback(values.duration.text, values.distance.text);
       });
     }
+  }
+
+  app.controller('FareCtrl', FareCtrl);
+  function FareCtrl($mdDialog, $scope, fare) {
+    $scope.fare = fare;
   }
 })();
