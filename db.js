@@ -4,7 +4,7 @@ var path = require('path');
 var bodyParser = require('body-parser');
 var request = require('request');
 app.use(bodyParser.json());
-app.use(express.static(path.resolve(__dirname, '../')));
+app.use(express.static(path.resolve(__dirname, '/public')));
 
 var API_KEY   = require('./config.json').API_KEY;
 var INTERCEPT = require('./config.json').INTERCEPT;
