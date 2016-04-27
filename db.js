@@ -5,7 +5,7 @@ var bodyParser = require('body-parser');
 var request = require('request');
 app.use(bodyParser.json());
 app.use(express.static(path.resolve(__dirname, '/public')));
-var json = require('./config.json');
+var json = require('app/config.json');
 var API_KEY   = json.API_KEY;
 var INTERCEPT = json.INTERCEPT;
 var XONE      = json.XONE;
