@@ -164,11 +164,23 @@
       var urlTop = "https://maps.googleapis.com/maps/api/distancematrix/json?units=imperial&origins=";
       var urlBtm = start + "&destinations=" + end + "&departure_time=" + Math.round(new Date().getTime()/1000.0) + "&traffic_model=best_guess";
 
-      $http.get(urlTop + urlBtm)
-      .success(function(res) {
-        var values = res.rows[0].elements[0];
-        callback(values.duration.text, values.distance.text);
-      });
+      var req = {
+        method: 'POST',
+        url: '/distance',
+        data: {
+          'curr': start,
+          'dest': end
+        }
+      }
+
+      $http(req)
+        .then(function success(res) {
+          // var values = res.rows[0].elements[0];
+          var values = res.data.rows[0].elements[0];
+          callback(values.duration.text, values.distance.text);
+        }, function error(res) {
+          console.log("Error getting distance");
+        });
     }
   }
 

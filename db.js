@@ -25,6 +25,16 @@ app.post('/autocomplete', function(req, res) {
 	});
 });
 
+app.post('/distance', function(req, res) {
+	var data = req.body;
+	var distTop =  "https://maps.googleapis.com/maps/api/distancematrix/json?units=imperial&origins=";
+	var distBtm = data.curr + "&destinations=" + data.dest + "&departure_time=" + Math.round(new Date().getTime()/1000.0) + "&traffic_model=best_guess";
+	request(distTop + distBtm, function(err, response, body) {
+		if(err) throw err;
+		res.send(body);
+	});
+});
+
 app.get('/', function(req, res) {
 	res.sendFile(__dirname + '/index.html');
 });
