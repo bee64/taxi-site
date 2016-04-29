@@ -138,9 +138,10 @@
               templateUrl: 'fare.tmpl.html',
               controller: FareCtrl,
               locals: {
-                fare: info
-              },
-              cancel: 'OK'
+                fare: info,
+                dist: dist,
+                duration: time
+              }
             });
           }, function error(res){
             console.log(res);
@@ -185,7 +186,9 @@
   }
 
   app.controller('FareCtrl', FareCtrl);
-  function FareCtrl($mdDialog, $scope, fare) {
+  function FareCtrl($mdDialog, $scope, fare, dist, duration) {
     $scope.fare = fare;
+    $scope.dist = dist;
+    $scope.duration = duration;
   }
 })();

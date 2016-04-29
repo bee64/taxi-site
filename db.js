@@ -30,6 +30,7 @@ app.post('/distance', function(req, res) {
 	var distTop =  "https://maps.googleapis.com/maps/api/distancematrix/json?units=imperial&origins=";
 	var distBtm = data.curr + "&destinations=" + data.dest + "&departure_time=" + Math.round(new Date().getTime()/1000.0) + "&traffic_model=best_guess";
 	request(distTop + distBtm, function(err, response, body) {
+		console.log(body);
 		if(err) throw err;
 		res.send(body);
 	});
@@ -60,7 +61,7 @@ app.post('/fare', function(req, res) {
 			}
 			var ldist = parseInt(data.dist.replace(" mi", ""));
 
-			var calc = INTERCEPT + (XONE * ldist) 
+			var calc = INTERCEPT + 0.80 + (XONE * ldist) 
 					+ (XTWO * ltime) + (XTHREE * data.riders);
 			res.send({'calc': calc.toFixed(2)});
 		}
@@ -69,5 +70,5 @@ app.post('/fare', function(req, res) {
 });
 
 app.listen(PORT, function(){
-	console.log('Server listening on port ' + PORT);
+	console.log('Server listening on port ' + PORT +" . . .");
 });
