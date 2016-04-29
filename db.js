@@ -28,7 +28,7 @@ app.post('/autocomplete', function(req, res) {
 app.post('/distance', function(req, res) {
 	var data = req.body;
 	var distTop =  "https://maps.googleapis.com/maps/api/distancematrix/json?units=imperial&origins=";
-	var distBtm = data.curr + "&destinations=" + data.dest + "&departure_time=" + Math.round(new Date().getTime()/1000.0) + "&traffic_model=best_guess";
+	var distBtm = data.curr + "&destinations=" + data.dest + "&departure_time=" + Math.round(new Date().getTime()/1000.0) + "&traffic_model=best_guess&mode=driving";
 	request(distTop + distBtm, function(err, response, body) {
 		console.log(body);
 		if(err) throw err;
@@ -53,7 +53,7 @@ app.post('/fare', function(req, res) {
 				data.time = data.time.replace(" min", "");
 				data.time = data.time.replace(" hr ", ":");
 				var times = data.time.split(":");
-				ltime = (parseInt(times[0]) * 60) 
+				ltime = (parseInt(times[0]) * 60)
 					+ parseInt(times[1]);
 			} else {
 				data.time = data.time.replace(" min", "");
@@ -61,11 +61,11 @@ app.post('/fare', function(req, res) {
 			}
 			var ldist = parseInt(data.dist.replace(" mi", ""));
 
-			var calc = INTERCEPT + 0.80 + (XONE * ldist) 
+			var calc = INTERCEPT + 0.80 + (XONE * ldist)
 					+ (XTWO * ltime) + (XTHREE * data.riders);
 			res.send({'calc': calc.toFixed(2)});
 		}
-	} else 
+	} else
 		res.status(500).send('Invalid data!');
 });
 
