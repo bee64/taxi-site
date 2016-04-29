@@ -17,7 +17,7 @@ h1 {
 }
 
 md-input-container {
-	width: 150px;
+	width: 200px;
 }
 
 md-input-container input {
@@ -32,10 +32,6 @@ body {
  	-o-background-size: cover;
  	background-size: cover;
  	overflow-x: hidden;
-}
-
-md-checkbox.md-default-theme.md-checked ._md-icon, md-checkbox.md-checked ._md-icon{
-	background-color: rgba(0, 150, 136, .9);
 }
 
 .info-wrap {
@@ -95,14 +91,6 @@ md-checkbox.md-default-theme.md-checked ._md-icon, md-checkbox.md-checked ._md-i
 	background: rgba(0, 150, 136, .25);
 	transition: background-color 0.2s ease-in,
               color 0.2s ease-in;
-}
-
-.strip {
-	text-align: center;
-	display: block;
-	height: 1px;
-	max-width: 50px;
-	border-bottom: 1px solid #009688;
 }
 
 @media (max-device-width: 667px) {

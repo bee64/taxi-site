@@ -110,6 +110,17 @@
   function DialogCtrl($scope, $mdDialog, $http) {
     
     $scope.getInfo = function (ev, curr, dest, numRiders) {
+      if(dest === null || curr === null || numRiders === null
+      || dest === undefined || curr === undefined
+      || numRiders === undefined)
+        throw new Error("Empty field!");
+      else if(dest.length > 100) 
+        throw new Error("Your destination is too long!");
+      else if(curr.length > 100) 
+        throw new Error("Your destination is too long!");
+      else if(parseInt(numRiders) > 9) 
+        throw new Error("Too many riders!");
+      else 
       calcDistDuration(curr, dest, function(time, dist){
         var info = "Time: " + time + ", Distance: " + dist + ", Riders: " + numRiders;
         var req = {
@@ -157,9 +168,6 @@
     }
 
     function calcDistDuration(start, end, callback) {
-      var geocoder = new google.maps.Geocoder();
-      var spos;
-      var epos;
       start = usableAddress(start);
       end   = usableAddress(end);
       var urlTop = "https://maps.googleapis.com/maps/api/distancematrix/json?units=imperial&origins=";
