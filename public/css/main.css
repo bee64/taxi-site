@@ -44,7 +44,8 @@ md-checkbox.md-default-theme.md-checked ._md-icon, md-checkbox.md-checked ._md-i
 	background-color: rgba(255, 255, 255, .95);
 }
 
-.info-wrap h1 {
+.info-wrap h1,
+.dialogh1 {
 	padding-top: 15px;
 	padding-bottom: 15px;
 	margin-top: 0px;
@@ -103,3 +104,11 @@ md-checkbox.md-default-theme.md-checked ._md-icon, md-checkbox.md-checked ._md-i
 	max-width: 50px;
 	border-bottom: 1px solid #009688;
 }
+
+@media (max-device-width: 667px) {
+	md-input-container {
+		font-size: 30px;
+	}
+}
+
+
