@@ -77,7 +77,7 @@
     }
 
     function loadAll() {
-      var allLocations = "Central Park Zoo, Carnegie Hall, Times Square, Imperial Theatre, Columbia University, American Museum of Natural History, Yankee Stadium, Bronx Zoo, Cross County Shopping Center, University Hospital"; 
+      var allLocations = ""; 
       return allLocations.split(/, +/g).map( function (location) {
         return {
           value: location.toLowerCase(),
@@ -88,7 +88,7 @@
 
     function loadAuto(res) {
       var locations = res.data.predictions;
-      
+
       return locations.map(function(loc){
         var temp = loc.terms[0].value;
         return {
@@ -108,19 +108,19 @@
 
   app.controller('DialogCtrl', DialogCtrl);
   function DialogCtrl($scope, $mdDialog, $http) {
-    
+
     $scope.getInfo = function (ev, curr, dest, numRiders) {
       if(dest === null || curr === null || numRiders === null
       || dest === undefined || curr === undefined
       || numRiders === undefined)
         throw new Error("Empty field!");
-      else if(dest.length > 100) 
+      else if(dest.length > 100)
         throw new Error("Your destination is too long!");
-      else if(curr.length > 100) 
+      else if(curr.length > 100)
         throw new Error("Your destination is too long!");
-      else if(parseInt(numRiders) > 9) 
+      else if(parseInt(numRiders) > 9)
         throw new Error("Too many riders!");
-      else 
+      else
       calcDistDuration(curr, dest, function(time, dist){
         var info = "Time: " + time + ", Distance: " + dist + ", Riders: " + numRiders;
         var req = {
